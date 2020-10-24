@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+# kindにworkloadsリソースの種類を指定する
+kind: ReplicaSet
+metadata:
+  name: sample-rs
+spec:
+  replicas: 3
+  # kubernetesがpodの数を監視しているが、
+  # その際にselector配下で指定されているラベルがついてるpodの数を監視している
+  # なので、template配下でのlabelと同一にしないといけない
+  selector:
+    matchLabels:
+      app: sample-app
+      env: develop
+  # templateに複製するpodの定義を書いておく
+  template:
+    metadata:
+      labels:
+        # また、replicaset外で、同じ名前のラベルがついたpodが作られると
+        # replica数が超過したと感知され、最後に作られたpodが削除されるので
+        # ラベルはユニークにつけるべき
+        # また複数のラベルを付けれるので、複数でユニークにするべき(以下のように)
+        app: sample-app
+        env: develop
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.12
+          ports:
+            - containerPort: 80

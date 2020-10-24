@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-externalname
+  namespace: default
+spec:
+  type: ExternalName
+  # 例えば、externalNameに外部サービスのホスト名を指定しておくことで、
+  # クラスター内からは、このexternalName Serviceあてにリクエストを投げるだけで、
+  # 外部サービス（今回の場合は、external.example.com）に接続できる
+  # external.example.comがexternal1.example.comなどに、変わった際にアプリケーション側の設定を変更しなくても
+  # ここのexternalNameを変更するだけよくなる
+  # 外部サービスとの疎結合を保てる
+  externalName: external.example.com

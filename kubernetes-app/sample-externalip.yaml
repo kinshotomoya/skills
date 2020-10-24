@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-externalip
+spec:
+  type: ClusterIP
+  # externalIPを作成すると、それに付随するClusterIPも作成される
+  # 以下で指定したIPのNodeが8080portでlistenするようになる
+  externalIPs:
+    - 10.146.0.3
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 8080
+      targetPort: 80
+  selector:
+    app: sample-app

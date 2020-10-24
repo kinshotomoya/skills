@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sample-statefulset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sample-app
+  serviceName: sample-statefulset
+  template:
+    metadata:
+      labels:
+        app: sample-app
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.12
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            # 以下に指定したディレクトリ、ファイルを永続化層領域(ノード上)にマウントする
+            - mountPath: /usr/share/nginx/html
+              name: www
+  volumeClaimTemplates:
+    - metadata:
+        name: www
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1G

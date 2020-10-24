@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-configmap
+data:
+  # nginx.confをconfigmapとして読み込む
+  nginx.conf: |
+    user: nginx;
+    worker_process: 3;
+    error_log /var/log/nginx/error.log
+    events {
+      worker_connections 256;
+    }
+    http {
+      include /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+      server {
+        listen 80;
+        access_log /var/log/nginx/access.log;
+        proxy_pass_header Server;
+        location / {
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_pass http://app:9000;
+        }
+      }
+    }

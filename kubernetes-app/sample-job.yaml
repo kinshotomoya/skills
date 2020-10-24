@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sample-job
+spec:
+  # 成功回数
+  completions: 1
+  # 並列度
+  parallelism: 1
+  # 失敗許容回数
+  backoffLimit: 10
+  template:
+    spec:
+      containers:
+      - name: sleep-container
+        image: centos:7
+        command: ["sleep"]
+        args: ["60"]
+        # podのプロセスが停止すると、新規にpodを作成する
+        # onFailerの場合、podを使い回す
+      restartPolicy: Never
+

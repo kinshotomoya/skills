@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+# statefulsetは、永続化層をよく使うworkloadなので、
+# 簡単にpersistmentvolumeとpersistmentvolumeclaimを作れる仕組みがある
+kind: StatefulSet
+metadata:
+  name: sample-statefulset-with-pvc
+spec:
+  selector:
+    matchLabels:
+      app: sample-pvc
+  serviceName: stateful-with-pvc
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: sample-pvc
+    spec:
+      containers:
+      - name: sample-pvc
+        image: nginx:1.12
+        volumeMounts:
+        - mountPath: /tmp
+          # ここに、以下で定義するpersistmentvolumeclaimの名前を指定する
+          name: pvc-template-volume
+  # ここで、persistmentvolumeclaim
+  volumeClaimTemplates:
+    - metadata:
+        name: pvc-template-volume
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10G
+        # 以下のstorageClassを事前に作成しておく必要がある
+        storageClassName: "sample-storageclass"

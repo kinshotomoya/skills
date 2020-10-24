@@ -1,0 +1,28 @@
+# Ingressは、ロードバランシングするためのルールを記載したもの
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: sample-ingress
+spec:
+  rules:
+    - host: sample.example.com
+      http:
+        paths:
+          # sample-ingress-appで起動したNodePortServiceの名前を指定している
+          - path: /path1/*
+            backend:
+              serviceName: sample-ingress-svc-1
+              servicePort: 8888
+          # sample-ingress-appで起動したNodePortServiceの名前を指定している
+          - path: /path2/*
+            backend:
+              serviceName: sample-ingress-svc-2
+              servicePort: 8888
+  # 上記のパスに一致しない場合には、以下に指定したserviceに転送される
+  backend:
+    serviceName: sample-ingress-default
+    servicePort: 8888
+  tls:
+    - hosts:
+      - sample.example.com
+      secretName: tls-sample

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-clusterip
+spec:
+  # cluster内からのみ疎通性のあるIPが割り当てられる
+  # 同一クラススター内で、pod間で通信を行うときに、指定すると
+  # 疎通をいい感じにpodに振り分けてくれる
+  type: ClusterIP
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 8080
+      targetPort: 80
+  selector:
+    app: sample-app

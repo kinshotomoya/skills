@@ -1,0 +1,9 @@
+# dynamic provisioningを行う際に、まずprovirionerを作成しておく
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sample-storageclass
+parameters:
+  type: pd-ssd
+provisioner: kubernetes.io/gce-pd
+reclaimPolicy: Delete

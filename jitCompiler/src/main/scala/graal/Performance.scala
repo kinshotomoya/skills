@@ -1,0 +1,4 @@
+package graal
+
+class Performance {
+}

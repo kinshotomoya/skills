@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-emptydir
+spec:
+  containers:
+  - image: nginx:1.12
+    name: nginx-container
+    volumeMounts:
+    # pod上の/cache配下をマウントする
+    - mountPath: /cache
+      name: cache-volume
+  volumes:
+  # emptyDirは、pod用の一時的なディスク領域として使える
+  - name: cache-volume
+    emptyDir: {}

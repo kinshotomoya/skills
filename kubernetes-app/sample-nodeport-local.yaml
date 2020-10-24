@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-nodeport-local
+spec:
+  type: NodePort
+  # リクエストが到達したnode上にあるpodにしか転送されない
+  # デフォルトのClusterを指定した場合は、nodeをまたいでpodに転送される
+  externalTrafficPolicy: Local
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 8080
+      targetPort: 80
+      nodePort: 30081
+  selector:
+    app: sample-app

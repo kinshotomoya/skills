@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-configmap-single-volume
+spec:
+  containers:
+    - name: configmap-container
+      image: nginx:1.12
+      # pod上にボリューム領域を取る
+      volumeMounts:
+        # /config配下にconfigmapをマウントする
+        - mountPath: /config
+          name: config-volume
+  volumes:
+    - name: config-volume
+      configMap:
+        # sample-configmap.yamlファイルで作ったconfigmapの名前を指定する
+        name: sample-configmap
+        items:
+          # sample-configmap.yamlで指定したkeyを指定する
+          - key: nginx.conf
+            path: nginx.conf

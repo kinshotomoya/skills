@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-lb
+spec:
+  type: LoadBalancer
+  # 静的なIPも指定できる
+  # loadBalancerIP: xxxx
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 8080
+      targetPort: 80
+      nodePort: 30082
+  selector:
+    app: sample-app
+  # 以下のように送信元のIPを指定することでアクセス制限を行う
+  loadBalancerSourceRanges:
+    - 10.0.0.0/8

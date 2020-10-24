@@ -1,0 +1,46 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:8:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mdef partial1[A, B, C](a: A, f: (A, B) => C): B => C = {[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:12:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mval rr: Int => Int = partial1(1, (x: Int, y: Int) => x + y)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:17:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mdef test(x: Int, y: Int): Int = x + y[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:18:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mval ff: Int => Int = test(1, _: Int)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:19:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mff(3)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:22:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mdef area(pi: Double, r: Int): Double = pi * r * r[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:23:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mval f1: Int => Double = area(3.14, _)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:24:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mf1(10)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Partial.scala:46:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mval f: Int => Double = (x: Int) => math.Pi / 2 - x[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Test.scala:18:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mdef handle[T](value: T, aa: T): Boolean = {[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Test.scala:22:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mTest.findFirst(Array("a"), "a", handle[String])[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/Test.scala:23:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mTest.findFirst(Array(1, 2, 3), 4, handle[Int])[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/fibo.scala:3:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mdef fibo(goal: Int): Int = {[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/fibo.scala:15:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mval result: Int = fibo(10)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/src/main/scala/fibo.scala:16:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mprintln(result)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m15 errors found[0m
