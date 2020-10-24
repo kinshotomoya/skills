@@ -126,7 +126,7 @@ trait Stream[+A] {
   }
 
   def append[A](h: => A): Stream[A] = {
-
+    ???
   }
 
 

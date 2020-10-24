@@ -285,21 +285,21 @@
 [debug] == resolving dependencies com.kinsho#scalafunctional$sources;1.0-SNAPSHOT->jline#jline;2.14.6 [scala-tool->master]
 [debug] 	resolved ivy file produced in cache
 [debug] :: downloading artifacts ::
-[debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.12!jansi.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-lang#scala-compiler;2.13.1!scala-compiler.jar(src)
 [debug] 	[NOT REQUIRED] jline#jline;2.14.6!jline.jar(src)
+[debug] 	[NOT REQUIRED] org.scala-lang#scala-compiler;2.13.1!scala-compiler.jar(src)
+[debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.12!jansi.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.13.1!scala-reflect.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-library;2.13.1!scala-library.jar(src)
-[debug] :: resolution report :: resolve 40ms :: artifacts dl 2ms
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT compile produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-compile.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT runtime produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-runtime.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT test produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-test.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT provided produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-provided.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT optional produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-optional.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT compile-internal produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-compile-internal.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT runtime-internal produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-runtime-internal.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT test-internal produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-test-internal.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT plugin produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-plugin.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT pom produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-pom.xml
-[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT scala-tool produced in /Users/jinzhengpengye/work_space/loginfrastructure/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-scala-tool.xml
-[debug] 	resolve done (40ms resolve - 2ms download)
+[debug] :: resolution report :: resolve 18ms :: artifacts dl 2ms
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT compile produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-compile.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT runtime produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-runtime.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT test produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-test.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT provided produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-provided.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT optional produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-optional.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT compile-internal produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-compile-internal.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT runtime-internal produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-runtime-internal.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT test-internal produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-test-internal.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT plugin produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-plugin.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT pom produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-pom.xml
+[debug] 	report for com.kinsho#scalafunctional$sources;1.0-SNAPSHOT scala-tool produced in /Users/kinsho/workspace/skills/scalaFunctional/target/scala-2.13/resolution-cache/reports/com.kinsho-scalafunctional$sources-scala-tool.xml
+[debug] 	resolve done (18ms resolve - 2ms download)

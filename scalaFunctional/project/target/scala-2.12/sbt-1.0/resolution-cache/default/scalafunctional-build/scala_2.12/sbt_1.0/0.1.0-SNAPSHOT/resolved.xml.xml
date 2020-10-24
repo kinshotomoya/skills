@@ -4,7 +4,7 @@
 		module="scalafunctional-build"
 		revision="0.1.0-SNAPSHOT"
 		status="integration"
-		publication="20200823101135"
+		publication="20201024123610"
 		e:sbtVersion="1.0" e:scalaVersion="2.12"
 	>
 		<description>

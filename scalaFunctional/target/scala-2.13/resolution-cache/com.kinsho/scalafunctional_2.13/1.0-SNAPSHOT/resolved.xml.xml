@@ -4,7 +4,7 @@
 		module="scalafunctional_2.13"
 		revision="1.0-SNAPSHOT"
 		status="integration"
-		publication="20200627160636"
+		publication="20201024123618"
 	>
 		<description>
 		scalaFunctional
