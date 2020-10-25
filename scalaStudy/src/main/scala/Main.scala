@@ -47,7 +47,7 @@ object Main extends App {
     def toHexString: String = java.lang.Integer.toHexString(self)
   }
 
-  3.toHexString
+  // 3.toHexString
 
   // 正当性
   // 実行時のオーバーヘッドを無くしながら、型安全を得ることがある。
@@ -103,7 +103,7 @@ object Main extends App {
   // 名前渡しパラメータを使うことはできない
   // value classはvalしか持つことはできないから
 
-  class Name(val value: => String) extends AnyVal
+  // class Name(val value: => String) extends AnyVal
 
   // 複数のコンストラクタを持つことができない
   class Secondary(val name: String) extends AnyVal {
@@ -116,7 +116,7 @@ object Main extends App {
   case class Test1(name: String)
 
   object Test1 {
-     override def apply(value: String): Test1 = Test1(value)
+     def apply(value: String): Test1 = Test1(value)
   }
 
 
