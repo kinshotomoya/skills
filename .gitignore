@@ -1,2 +1,8 @@
-/scalaFunctional/.idea/
+.idea/
 scalaFunctional/project/target/
+valueclass/project
+valueclass/target
+valueclass/.idea
+scalaFunctional/.idea/
+target/
+
