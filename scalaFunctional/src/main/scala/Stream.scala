@@ -126,8 +126,16 @@ trait Stream[+A] {
   }
 
   def append[A](h: => A): Stream[A] = {
-    ???
+    foldRight(Empty: Stream[A])((a, b) => cons(a, b))
   }
+
+  def flatMap[A, B](f: A => Stream[B]): Stream[B] = {
+    foldRight(Empty: Stream[B])((a, b) => f(a) match {
+      case Cons(h, _) => cons(h(), b)
+      case Empty => empty
+    })
+  }
+
 
 
 }
@@ -154,3 +162,6 @@ object Stream {
   }
 
 }
+
+
+
