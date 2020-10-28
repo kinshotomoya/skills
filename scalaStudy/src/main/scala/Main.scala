@@ -16,7 +16,7 @@ object Main extends App {
   }
 
   // value classは汎用トレイトのみを拡張することができる
-  trait Printable {
+  trait Printable extends Any{
     def print(): Unit
   }
 
@@ -32,7 +32,7 @@ object Main extends App {
   class User(val name: String)
 
   //　まあtrait以外はmixinできないから
-  class UserId4(val value: String) extends AnyVal with User
+  // class UserId4(val value: String) extends AnyVal with User
 
 
   //汎用トレイトによっては、value classにメモリ割り当てをするようになることもある
@@ -65,7 +65,7 @@ object Main extends App {
   // メモリ割り当てが必要になる場合
   // （１）他の型として扱われる場合
 
-  trait Distance
+  trait Distance extends Any
 
   case class Meter2(value: Double) extends AnyVal with Distance {
   }
@@ -106,9 +106,9 @@ object Main extends App {
   // class Name(val value: => String) extends AnyVal
 
   // 複数のコンストラクタを持つことができない
-  class Secondary(val name: String) extends AnyVal {
-    def this(x: String) = this(x)
-  }
+//  class Secondary(val name: String) extends AnyVal {
+//    def this(x: String) = this(x)
+//  }
 
 
   // applyメソッドをオーバーライドして、Test値クラスを作成しても、
