@@ -125,8 +125,9 @@ trait Stream[+A] {
     foldRight(Empty: Stream[A])((a, b) => if(f(a)) cons(a, b) else b)
   }
 
-  def append[A](h: => A): Stream[A] = {
-    foldRight(Empty: Stream[A])((a, b) => cons(a, b))
+  // BがAのスーパークラス
+  def append[B >: A](s: => Stream[B]): Stream[B] = {
+    foldRight(s)((x, y) => cons(x, y))
   }
 
   def flatMap[A, B](f: A => Stream[B]): Stream[B] = {
@@ -135,6 +136,13 @@ trait Stream[+A] {
       case Empty => empty
     })
   }
+
+
+  def constant[A](a: A): Stream[A] = cons(a, constant(a))
+
+  def from(n: Int): Stream[Int] = cons(n, from(n + 1))
+
+  def fibs(x: Int, y: Int): Stream[Int] = cons(x, fibs(y, x + y))
 
 
 
