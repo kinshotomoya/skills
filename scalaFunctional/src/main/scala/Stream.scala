@@ -138,12 +138,34 @@ trait Stream[+A] {
   }
 
 
+
   def constant[A](a: A): Stream[A] = cons(a, constant(a))
+
+  // より効率的にリファクタリング
+  def constantR[A](a: A): Stream[A] = {
+    lazy val tail: Stream[A] = Cons(() => a, () => tail)
+    tail
+  }
 
   def from(n: Int): Stream[Int] = cons(n, from(n + 1))
 
   def fibs(x: Int, y: Int): Stream[Int] = cons(x, fibs(y, x + y))
 
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = {
+    f(z) match {
+      case Some((a, s)) => cons(a, unfold(s)(f))
+      case None => empty
+    }
+  }
+
+
+  def fibsViaUnfold: Stream[Int] = unfold((0, 1)){case (f1, f2) => Some(f1, (f2, f1 + f2))}
+
+  def fromViaUnfold(n: Int): Stream[Int] = unfold(n)(n => Some((n, n+1)))
+
+  def constantViaUnfold[A](a: A): Stream[A] = unfold(a)(_ => Some(a, a))
+
+  def oneViaUnfold: Stream[Int] = unfold(1)(_ => Some((1, 1)))
 
 
 }
