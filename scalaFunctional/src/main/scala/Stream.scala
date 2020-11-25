@@ -167,8 +167,54 @@ trait Stream[+A] {
 
   def oneViaUnfold: Stream[Int] = unfold(1)(_ => Some((1, 1)))
 
+  def mapViaUnfold[A, B](f: A => B): Stream[B] = {
+    unfold(this){
+      case Cons(h, t) => Some((f(h()), t()))
+      case _ => None
+    }
+  }
+
+  def takeViaUnfold(n: Int): Stream[A] = unfold(this){
+    case Cons(h, t) => Some((h(), t()))
+    case _ => None
+  }
+
+  def takeWhileViaUnfold(f: A => Boolean): Stream[A] =
+    unfold(this) {
+      case Cons(h, t) if f(h()) => Some((h(), t()))
+      case _ => None
+    }
+
+  def zipWithAll[B, C](s2: Stream[B])(f: (Option[A], Option[B]) => C): Stream[C] =
+    unfold((this, s2)) {
+      case (Empty, Empty) => None
+      case (Cons(h, t), Empty) => Some(f(Some(h()), Option.empty[B]).->((t(), empty[B])))
+      case (Empty, Cons(h, t)) => Some(f(Option.empty[A], Some(h())) -> (empty[A] -> t()))
+      case (Cons(h1, t1), Cons(h2, t2)) => Some(f(Some(h1()), Some(h2())) -> (t1() -> t2()))
+    }
+
+
+  // Stream(1, 2, 3)  Stream(1, 2) => true
+  def startsWith[A](s: Stream[A]): Boolean = {
+    unfold((this, s)){
+      case (Cons(h1, t1), Cons(h2, t2)) if h1 == h2 => Some((h1(), (t1(), t2())))
+      case _ => None
+  } match {
+      case Empty => false
+      case _ => true
+    }
+  }
+
+
+  def tails: Stream[Stream[A]] =
+    unfold(this){
+      case Empty => None
+      case s @ Cons(h, t) => Some((s, t()))
+    }
 
 }
+
+
 case object Empty extends Stream[Nothing] {
   override def equals(that: Any): Boolean = ???
 }
@@ -192,6 +238,9 @@ object Stream {
   }
 
 }
+
+
+
 
 
 
