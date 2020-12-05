@@ -1,3 +1,4 @@
+import PureFunction.Rand
 
 trait RNG {
   def nextInt: (Int, RNG)
@@ -141,18 +142,29 @@ object PureFunction {
 
 // exercise6.10
 object Test {
-  type Rand[A] = State[RNG, A]
+//  type Rand[A] = State[S, A]
 
   case class State[S,+A](run: S => (A, S)) {
-    def unit(a: A): Rand[A] = {
+    def map[B](f: A => B): State[S, B] =
+      flatMap(a => unit(f(a)))
+
+    def map2[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
+      flatMap((a: A) => sb.map((b: B) => f(a, b)))
+
+    def flatMap[B](f: A => State[S, B]): State[S, B] = State(s => {
+      val (a, s1) = run(s)
+      f(a).run(s1)
+    })
+
+  }
+
+
+  object State {
+    def unit[S, A](a: A): State[S, A] = {
       State {
-        s: RNG => (a, s)
+        s => (a, s)
       }
     }
-
-
-
-
   }
 
 
