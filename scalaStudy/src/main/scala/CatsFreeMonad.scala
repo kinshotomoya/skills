@@ -1,5 +1,10 @@
+import cats.arrow.FunctionK
 import cats.free.Free
 import cats.free.Free.liftF
+import cats.{Id, ~>}
+
+import scala.collection.mutable
+
 // catsのFree Monadの練習をする
 
 // 概要
@@ -13,6 +18,7 @@ import cats.free.Free.liftF
 // 純粋関数の集まりで処理を書くことができるのでテスたぶる
 
 object CatsFreeMonad {
+  // DSLを定義する
   sealed trait KVStoreA[A]
   case class Put[T](key: String, value: T) extends KVStoreA[Unit]
   case class Get[T](key: String) extends KVStoreA[Option[T]]
@@ -63,6 +69,46 @@ object CatsFreeMonad {
 
   // TODO: 続き！！！！！！
   // https://typelevel.org/cats/datatypes/freemonad.html#4-write-a-compiler-for-your-program
+
+  // KVStoreA ~> Id = FunctionK[KVStoreA, Id]
+  // FunctionK[KVStoreA, Id]は、KVStoreAをIdに変換するFunctor
+
+  // このimpureCompilerメソッドは、副作用を含んでおり不純なメソッドである
+  // kvsを変更するし、printlnもしているので。
+  // 関数型プログラミングは、副作用を防ぐのではなくて、副作用を分離させることを目的にしている。
+
+  // 例えば、このメソッドでDBにアクセスする処理を書くなどする（副作用）
+
+
+  // インタープリターを作成している。（実際の実行基盤みたいなもの）
+  // 様々なインタープリターを作成することで、様々な処理を行うことができる。
+  def impureCompiler: KVStoreA ~> Id =
+    new (KVStoreA ~> Id) {
+
+      val kvs = mutable.Map.empty[String, Any]
+
+      override def apply[A](fa: KVStoreA[A]): Id[A] = {
+        fa match {
+          case Put(k: String, v: Any) =>
+            println(s"put($k, $v)")
+            kvs(k) = v
+            ()
+          case Get(k) =>
+            println(s"get($k")
+            kvs.get(k).map(_.asInstanceOf[A])
+          case Delete(k) =>
+            println(s"delete($k")
+            kvs.remove(k)
+            ()
+        }
+      }
+    }
+
+
+  // programは、実際に処理を実装している
+  // impureCompilerは、副作用のある実際の処理を実装している
+  // foldMapをすることで、プログラムの実行を行っている
+  program.foldMap(impureCompiler)
 
 
 }
