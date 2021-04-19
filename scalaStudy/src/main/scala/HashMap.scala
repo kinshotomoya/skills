@@ -1,3 +1,5 @@
+
+
 object HashMap {
   class HashMap {
 
@@ -95,7 +97,174 @@ object HashMap {
         }
       }
     }
-    
+
   }
+
+  class HashMapWithNode {
+    val N = 100
+
+    class Node(var key: Int, var value: Int, var previous: Node, var next: Node)
+
+    val hashTable = new Array[Node](N)
+
+
+    def get(key: Int): Int = {
+      def loop(next: Node): Int = {
+        if(next == null) {
+          -1
+        } else {
+          if(next.key == key) {
+            next.value
+          } else {
+            loop(next.next)
+          }
+        }
+      }
+      val hashCode = key % N
+      val node = hashTable(hashCode)
+      loop(node)
+    }
+
+
+    def remove(key: Int): Unit = {
+      val hashCode = key % N
+      val node = hashTable(hashCode)
+
+      def loop(next: Node): Unit = {
+        if(next != null) {
+          if(next.key == key) {
+            if(next.previous == null) {
+              hashTable.update(hashCode, null)
+            } else {
+              next.previous.next = next.next
+            }
+          } else {
+            loop(node.next)
+          }
+        } else {
+
+        }
+      }
+      loop(node)
+    }
+
+
+    def put(key: Int, value: Int): Unit = {
+      val hashCode = key % N
+      val node = hashTable(hashCode)
+
+      def loop(next: Node): Unit = {
+        if(next == null) {
+          val newNode = new Node(key, value, null, null)
+          hashTable.update(hashCode, newNode)
+        } else {
+          if(next.key == key) {
+            next.value = value
+          } else {
+            if(next.next == null) {
+              next.next = new Node(key = key, value = value, previous = next, next = null)
+            } else {
+              loop(next.next)
+            }
+          }
+        }
+      }
+      loop(node)
+    }
+
+  }
+
+
+
+  class HashMapWithNoneNode {
+    val N = 100
+
+    class Node(var key: Int, var value: Int, var next: Option[Node])
+
+    object Node {
+      def empty = new Node(-1, -1, None)
+    }
+
+    val hashTable = Array.fill(N)(Node.empty)
+
+    def get(key: Int): Int = {
+      def loop(target: Option[Node]): Int = {
+        target match {
+          case None => -1
+          case Some(node) => {
+            if(node.key == key) {
+              node.value
+            } else {
+              loop(node.next)
+            }
+          }
+        }
+      }
+
+      val hashCode = key % N
+      val node = Option(hashTable(hashCode))
+      loop(node)
+    }
+
+
+    def remove(key: Int): Unit = {
+      val hashCode = key % N
+      val previous = Option(hashTable(hashCode))
+      val node = previous
+
+      def loop(previous: Option[Node], target: Option[Node]): Unit = {
+
+        target match {
+          case None =>
+          case Some(node) => {
+            if(node.key == key) {
+              previous match {
+                case None =>
+                case Some(pre) => {
+                  pre.next = node.next
+                }
+              }
+            } else {
+              loop(Some(node), node.next)
+            }
+          }
+        }
+      }
+      loop(previous, node)
+    }
+
+
+    def put(key: Int, value: Int): Unit = {
+      val hashCode = key % N
+      val previous = Option(hashTable(hashCode))
+      val node = previous
+
+
+      def loop(previous: Option[Node], target: Option[Node]): Unit = {
+
+        (previous, target) match {
+          case (Some(pre), None) => {
+            pre.next = Some(new Node(key, value, None))
+          }
+          case (Some(_), Some(node)) => {
+            if(node.key == key) {
+              node.value = value
+            } else {
+              node.next match {
+                case None => {
+                  node.next = Some(new Node(key, value, None))
+                }
+                case Some(_) => loop(Some(node), node.next)
+              }
+            }
+          }
+          case _ =>
+        }
+      }
+      loop(previous, node)
+    }
+
+  }
+
 
 }
