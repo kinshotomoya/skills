@@ -21,3 +21,4 @@ def handle[T](value: T, aa: T): Boolean = {
 
 Test.findFirst(Array("a"), "a", handle[String])
 Test.findFirst(Array(1, 2, 3), 4, handle[Int])
+
