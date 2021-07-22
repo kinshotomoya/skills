@@ -42,11 +42,13 @@ object BFS {
         val source = edge.source
         val dest = edge.dest
 
+        // 例えば、ここのaddOneでも、生のArrayを利用していると
+        // 自分のサイズをまず取得して、その次のindexに要素を追加する
+        // さらに自分のArrayサイズがリサイズしなくても良いのかなどの判断も必要になる
         outLineList.apply(source).addOne(dest)
         outLineList.apply(dest).addOne(source)
 
       })
-
 
       Graph(outLineList)
 
