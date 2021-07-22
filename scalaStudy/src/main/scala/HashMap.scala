@@ -1,4 +1,4 @@
-
+import scala.collection.mutable.ArrayBuffer
 
 object HashMap {
   class HashMap {
@@ -185,7 +185,7 @@ object HashMap {
       def empty = new Node(-1, -1, None)
     }
 
-    val hashTable = Array.fill(N)(Node.empty)
+    val hashTable = ArrayBuffer.fill(N)(Node.empty)
 
     def get(key: Int): Int = {
       def loop(target: Option[Node]): Int = {
