@@ -1,13 +1,34 @@
 package Graphs
 
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 object BFS {
 
 
   def BFS(graph: Graph): Unit = {
-    graph.list.map(_.toArray)
-    ???
+    // mutable.Queueは、内部的にArrayDequeをラップしている
+    // なので、enqueueメソッドでも結局内部的にはArrayDequeueのaddOneメソッドが呼ばれているだけ
+    val nodeQueue = mutable.Queue.empty[Int]
+    val seenNodeSet = mutable.Set.empty[Int]
+    graph.list.zipWithIndex.foreach((indexWithArray: (ArrayBuffer[Int], Int)) => {
+      val index = indexWithArray._2
+      val array = indexWithArray._1
+
+      nodeQueue.enqueue(index)
+      nodeQueue.enqueueAll(array)
+
+      for(_ <- 1 to nodeQueue.size) {
+        val targetEle = nodeQueue.dequeue()
+        if(!seenNodeSet.contains(targetEle)) {
+          println(targetEle)
+          seenNodeSet.add(targetEle)
+        }
+
+      }
+
+    })
+
   }
 
   // graphのbfsを実装してみる
