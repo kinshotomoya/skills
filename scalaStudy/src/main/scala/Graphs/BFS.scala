@@ -12,11 +12,11 @@ object BFS {
     val nodeQueue = mutable.Queue.empty[Int]
     val seenNodeSet = mutable.Set.empty[Int]
     graph.list.zipWithIndex.foreach((indexWithArray: (ArrayBuffer[Int], Int)) => {
-      val index = indexWithArray._2
-      val array = indexWithArray._1
+      val parentNode = indexWithArray._2
+      val childNodes = indexWithArray._1
 
-      nodeQueue.enqueue(index)
-      nodeQueue.enqueueAll(array)
+      nodeQueue.enqueue(parentNode)
+      nodeQueue.enqueueAll(childNodes)
 
       for(_ <- 1 to nodeQueue.size) {
         val targetEle = nodeQueue.dequeue()
