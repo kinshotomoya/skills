@@ -3,7 +3,7 @@ package Graphs
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-object BFS {
+object BFS_DFS {
 
 
   def BFS(graph: Graph): Unit = {
@@ -31,10 +31,34 @@ object BFS {
 
   }
 
-  // graphのbfsを実装してみる
+
+  def DFS(graph: Graph): Unit = {
+    val nodeStack = mutable.Stack.empty[Int]
+    val seenNodeSet = mutable.Set.empty[Int]
+
+    def loop(childNodes: ArrayBuffer[Int]): Unit = {
+      if(nodeStack.nonEmpty) {
+        val targetNode = nodeStack.pop()
+        if(!seenNodeSet.contains(targetNode)) {
+          println(targetNode)
+          seenNodeSet.add(targetNode)
+        }
+        // pushAllの内部でtraverseがreverseされている
+        // ex) (2, 3, 4)のArrayをpushAllでstackに格納すると、一番上が4になる（つまり4が最初にpopされる）
+        nodeStack.pushAll(childNodes.filter(node => !seenNodeSet.contains(node)))
+        val nextTarget = if(targetNode == 0) {
+          nodeStack.push(1)
+          1
+        } else nodeStack.headOption.getOrElse(-1)
+        if(nextTarget != -1) loop(graph.list(nextTarget))
+      }
+    }
+    nodeStack.push(0)
+    loop(graph.list(0))
+
+  }
 
 
-  // まず、graphの状態をコード化する
 
   // edgeは頂点を紐づける線のこと
   // sourceは自分自身の頂点
