@@ -1,4 +1,4 @@
-package Graphs
+package detastructure
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer

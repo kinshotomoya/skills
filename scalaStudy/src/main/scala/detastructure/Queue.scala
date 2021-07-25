@@ -1,3 +1,5 @@
+package detastructure
+
 object Queue {
   class MyCircularQueue(_k: Int) {
 

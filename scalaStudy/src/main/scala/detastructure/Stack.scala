@@ -1,4 +1,4 @@
-
+package detastructure
 
 object Stack {
   class MinStack() {

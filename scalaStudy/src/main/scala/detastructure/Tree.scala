@@ -1,4 +1,7 @@
+package detastructure
+
 import scala.collection.mutable
+
 object Tree {
   class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null) {
     var value: Int = _value

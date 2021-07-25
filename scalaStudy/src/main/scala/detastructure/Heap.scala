@@ -1,3 +1,5 @@
+package detastructure
+
 import scala.collection.mutable
 
 object Heap {
