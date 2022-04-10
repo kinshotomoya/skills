@@ -24,7 +24,7 @@ object Jackson extends App {
 
   val value = ByteString(json)
   println(value.utf8String)
-//  val fromJsonValue = mapper.readValue(value.utf8String, classOf[OutputResult])
-//  println(fromJsonValue.document.ctr)
+  val fromJsonValue = mapper.readValue(value.utf8String, classOf[OutputResult])
+//  println(fromJsonValue)
 
 }
