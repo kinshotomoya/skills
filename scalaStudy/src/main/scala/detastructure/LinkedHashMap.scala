@@ -19,9 +19,11 @@ object LinkedHashMap {
       Option(array(arrayIndex)) match {
         case Some(value: DoublyLinkedList) =>
           val sameIndexLastDoublyLinkedList = findSameIndexLastDoublyLinkedList(value)
-          sameIndexLastDoublyLinkedList.next = Some(newDoublyLinkedList)
+          sameIndexLastDoublyLinkedList.sameIndexAfter = Some(newDoublyLinkedList)
+          newDoublyLinkedList.sameIndexBefore = Some(sameIndexLastDoublyLinkedList)
           newDoublyLinkedList.before = Some(sameIndexLastDoublyLinkedList)
         case None =>
+          array.update(arrayIndex, newDoublyLinkedList)
           this.lastDoublyLinkedList match {
             case Some(value) =>
               value.after = Some(newDoublyLinkedList)
@@ -32,6 +34,39 @@ object LinkedHashMap {
       this.lastDoublyLinkedList = Some(newDoublyLinkedList)
     }
 
+
+    def remove(key: String): Unit = {
+      val arrayIndex = doHash(key)
+      Option(array(arrayIndex)) match {
+        case None => // array自体に指定されたkeyのindexが存在しない場合は何もしない
+        case Some(value: DoublyLinkedList) =>
+          size -= 1
+          if(array(arrayIndex) == value) {
+            array.update(arrayIndex, value.sameIndexAfter.orNull)
+          }
+          findTargetDoublyLinkedList(value, key)
+      }
+    }
+
+    private def findTargetDoublyLinkedList(value: DoublyLinkedList, key: String): Unit = {
+      @tailrec
+      def loop(item: DoublyLinkedList, beforeItem: Option[DoublyLinkedList], afterItem: Option[DoublyLinkedList]): Unit = {
+        if (item.value == key) {
+          beforeItem.foreach(_.after = afterItem)
+          afterItem.foreach(_.before = beforeItem)
+          item.sameIndexBefore.foreach(_.sameIndexAfter = item.sameIndexAfter)
+          item.sameIndexAfter.foreach(_.sameIndexBefore = item.sameIndexBefore)
+        } else {
+          afterItem match {
+            case None => // ない場合は何もしない
+            case Some(newItem) => loop(newItem, newItem.sameIndexBefore, newItem.sameIndexAfter)
+          }
+        }
+      }
+
+      loop(value, value.sameIndexBefore, value.sameIndexAfter)
+    }
+
     // valueのnextを辿っていき最後のDoublyLinkedListを返す
     // nextがない場合は受け取ったvalueを返す
     private def findSameIndexLastDoublyLinkedList(value: DoublyLinkedList): DoublyLinkedList = {
@@ -39,10 +74,10 @@ object LinkedHashMap {
       def loop(item: DoublyLinkedList, nextItem: Option[DoublyLinkedList]): DoublyLinkedList = {
         nextItem match {
           case None => item
-          case Some(item) => loop(item, item.next)
+          case Some(item) => loop(item, item.sameIndexAfter)
         }
       }
-      loop(value, value.next)
+      loop(value, value.sameIndexAfter)
     }
 
     // 自前のhash関数
@@ -57,28 +92,31 @@ object LinkedHashMap {
       new DoublyLinkedList(
         before = None,
         after = None,
-        next = None,
+        sameIndexAfter = None,
+        sameIndexBefore = None,
         key = key,
         value = value
       )
     }
   }
 
-  class DoublyLinkedList(var before: Option[DoublyLinkedList],var after:Option[DoublyLinkedList],var next: Option[DoublyLinkedList],val key: String,val value: String) {
+  class DoublyLinkedList(var before: Option[DoublyLinkedList], var after:Option[DoublyLinkedList], var sameIndexAfter: Option[DoublyLinkedList], var sameIndexBefore: Option[DoublyLinkedList], val key: String, val value: String) {
   }
 
 
   def main(args: Array[String]): Unit = {
     val map = new LinkedHashMap()
     map.put("kinsho", "奈良県")
+    map.put("kinsho", "神奈川県")
     map.put("kinsho", "東京都")
+    map.put("kinsho", "埼玉県")
     map.put("siota", "大阪府")
-    println(map.size)
-    println(map.lastDoublyLinkedList.get.before.get.value)
-    println(map.lastDoublyLinkedList.get.after)
-    println(map.lastDoublyLinkedList.get.next)
-    println(map.lastDoublyLinkedList.get.key)
-    println(map.lastDoublyLinkedList.get.value)
+    map.remove("kinsho")
+    println(map.array(6).value)
+    println(map.array(6).sameIndexAfter.get.value)
+    println(map.array(6).sameIndexAfter.get.sameIndexBefore.get.value)
+    println(map.array(6).sameIndexAfter.get.sameIndexAfter.get.value)
+    println(map.array(6).sameIndexAfter.get.sameIndexAfter.get.sameIndexAfter) // None
   }
 
 
