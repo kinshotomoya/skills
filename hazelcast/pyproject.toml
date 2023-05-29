@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "hazelcast"
+version = "0.1.0"
+description = ""
+authors = ["金正朋也 <mhtnim1023@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+hazelcast-python-client = "5.2.0" # https://pypi.org/project/hazelcast-python-client/
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
