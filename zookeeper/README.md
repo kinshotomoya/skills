@@ -21,3 +21,4 @@ $ docker exec -it zookeeper-zoo2-1 bin/zkCli.sh
 [zk: localhost:2181(CONNECTED) 0] ls /znode
 [node]
 ```
+
