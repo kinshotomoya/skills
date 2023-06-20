@@ -4,6 +4,8 @@
 handle_signal() {
     echo 'SIGINT/SIGTERMを検出しました。'
     # メインプロセスの子プロセスID一覧を取得
+    # TODO: 子プロセスを取得するように
+    # ↓では子プロセス取得できない
     local children=`ps --ppid $$ --no-heading | awk '{ print $1 }'`
     for child in $children
     do
