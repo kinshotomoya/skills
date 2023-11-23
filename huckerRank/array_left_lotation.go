@@ -14,13 +14,13 @@ import (
 // -> [3 4 5 1 2]
 
 // 問題：https://www.hackerrank.com/challenges/ctci-array-left-rotation/problem?h_r=internal-search
-func rotLeft(a []int32, d int32) []int32 {
+func RotLeft(a []int32, d int32) []int32 {
 	// Write your code here
 	newArray := make([]int32, len(a))
-	if len(a)%int(d) == 0 {
+	if int(d) > 1 && len(a)%int(d) == 0 {
 		// len(array)の倍数の場合は同じ位置になる
 		return a
-	} else if len(a)/int(d) == 0 {
+	} else if int(d)/len(a) == 0 {
 		// dがlen(a)よりも小さい場合
 		for i := range a {
 			if i >= int(d) {
@@ -31,8 +31,9 @@ func rotLeft(a []int32, d int32) []int32 {
 		}
 	} else {
 		// dがlen(array)よりも大きい場合
-		amari := len(a) % int(d)
+		amari := int(d) % len(a)
 		for i := range a {
+			fmt.Println(amari)
 			if i >= amari {
 				newArray[i-amari] = a[i]
 			} else {
@@ -90,7 +91,7 @@ func LeftRotation() {
 		a = append(a, aItem)
 	}
 
-	result := rotLeft(a, d)
+	result := RotLeft(a, d)
 
 	for i, resultItem := range result {
 		fmt.Fprintf(writer, "%d", resultItem)
