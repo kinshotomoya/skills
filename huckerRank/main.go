@@ -31,4 +31,7 @@ func main() {
 	node1 := &Node{next: node2}
 	node5.next = node3
 	fmt.Println(DetectCycle(node1, paths))
+
+	// 問題: https://www.hackerrank.com/challenges/ctci-balanced-brackets/problem?h_r=internal-search
+	fmt.Println(IsBalanced("{{[[(())]))]}}"))
 }
