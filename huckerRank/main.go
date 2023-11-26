@@ -37,4 +37,19 @@ func main() {
 
 	// 問題:https://www.hackerrank.com/challenges/ctci-queue-using-two-stacks/problem?h_r=internal-search
 	ATableOfTwoStacks()
+
+	// 問題：https://www.hackerrank.com/challenges/tree-inorder-traversal/problem?h_r=internal-search
+	binaryNode7 := &BinaryNode{value: 7}
+	binaryNode9 := &BinaryNode{value: 9}
+	binaryNode16 := &BinaryNode{value: 16}
+	binaryNode8 := &BinaryNode{value: 8, right: binaryNode9, left: binaryNode7}
+	binaryNode15 := &BinaryNode{value: 15, right: binaryNode16, left: binaryNode8}
+	binaryNode6 := &BinaryNode{value: 6, right: binaryNode15}
+	binaryNode4 := &BinaryNode{value: 4}
+	binaryNode3 := &BinaryNode{value: 3, right: binaryNode4}
+	binaryNode5 := &BinaryNode{value: 5, right: binaryNode6, left: binaryNode3}
+	binaryNode2 := &BinaryNode{value: 2, right: binaryNode5}
+	binaryNode1 := &BinaryNode{value: 1, right: binaryNode2}
+	InorderTraversal(binaryNode1)
+
 }

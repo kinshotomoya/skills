@@ -2,7 +2,6 @@ package main
 
 import "fmt"
 
-// TODO: https://www.hackerrank.com/challenges/ctci-queue-using-two-stacks/problem?h_r=internal-search
 func ATableOfTwoStacks() {
 	// type:
 	//  1: enqueue
