@@ -34,4 +34,7 @@ func main() {
 
 	// 問題: https://www.hackerrank.com/challenges/ctci-balanced-brackets/problem?h_r=internal-search
 	fmt.Println(IsBalanced("{{[[(())]))]}}"))
+
+	// 問題:https://www.hackerrank.com/challenges/ctci-queue-using-two-stacks/problem?h_r=internal-search
+	ATableOfTwoStacks()
 }
