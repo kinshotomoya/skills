@@ -9,6 +9,10 @@ func FindTheRunningMedian() {
 	maxHeap.add(5)
 	maxHeap.add(6)
 	maxHeap.add(2)
+	maxHeap.add(17)
+	maxHeap.add(8)
+	maxHeap.add(98)
+	maxHeap.add(4)
 	maxHeap.poll()
 	maxHeap.print()
 }
@@ -54,7 +58,6 @@ func (receiver *MaxHeap) poll() int {
 		leftChildNodeIndex := 2*targetIndex + 1
 		rightChildNodeIndex := 2*targetIndex + 2
 		targetNode := receiver.heap[targetIndex]
-		fmt.Println(len(receiver.heap) - 1)
 		if leftChildNodeIndex <= len(receiver.heap)-1 && rightChildNodeIndex <= len(receiver.heap)-1 {
 			// 左子供と右子供両方ある場合
 			if receiver.heap[leftChildNodeIndex] > receiver.heap[rightChildNodeIndex] {
