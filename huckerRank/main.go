@@ -52,4 +52,7 @@ func main() {
 	binaryNode1 := &BinaryNode{value: 1, right: binaryNode2}
 	InorderTraversal(binaryNode1)
 
+	// 問題：
+	FindTheRunningMedian()
+
 }
