@@ -2,19 +2,8 @@ package main
 
 import "fmt"
 
-func FindTheRunningMedian() {
-	maxHeap := &MaxHeap{}
-	maxHeap.add(1)
-	maxHeap.add(3)
-	maxHeap.add(5)
-	maxHeap.add(6)
-	maxHeap.add(2)
-	maxHeap.add(17)
-	maxHeap.add(8)
-	maxHeap.add(98)
-	maxHeap.add(4)
-	maxHeap.poll()
-	maxHeap.print()
+func FindTheRunningMedian(arr []int) {
+	fmt.Println(RunningMedian(arr))
 }
 
 type MaxHeap struct {
@@ -60,18 +49,24 @@ func (receiver *MaxHeap) poll() int {
 		targetNode := receiver.heap[targetIndex]
 		if leftChildNodeIndex <= len(receiver.heap)-1 && rightChildNodeIndex <= len(receiver.heap)-1 {
 			// 左子供と右子供両方ある場合
-			if receiver.heap[leftChildNodeIndex] > receiver.heap[rightChildNodeIndex] {
+			if receiver.heap[leftChildNodeIndex] >= receiver.heap[rightChildNodeIndex] {
 				if receiver.heap[leftChildNodeIndex] > receiver.heap[targetIndex] {
 					receiver.heap[targetIndex] = receiver.heap[leftChildNodeIndex]
 					receiver.heap[leftChildNodeIndex] = targetNode
 					targetIndex = leftChildNodeIndex
+				} else {
+					return returnElement
 				}
 			} else if receiver.heap[rightChildNodeIndex] > receiver.heap[leftChildNodeIndex] {
 				if receiver.heap[rightChildNodeIndex] > receiver.heap[targetIndex] {
 					receiver.heap[targetIndex] = receiver.heap[rightChildNodeIndex]
 					receiver.heap[rightChildNodeIndex] = targetNode
 					targetIndex = rightChildNodeIndex
+				} else {
+					return returnElement
 				}
+			} else {
+				return returnElement
 			}
 		} else if leftChildNodeIndex == len(receiver.heap)-1 {
 			// 左子供だけある場合
@@ -91,10 +86,38 @@ func (receiver *MaxHeap) poll() int {
 
 // TODO: ヒープソートを適応
 // これで配列の中央値を取得する！！
-func (receiver *MaxHeap) sort() {
-
+func (receiver *MaxHeap) sort() []int {
+	result := make([]int, 0)
+	count := len(receiver.heap)
+	for i := 0; i < count; i++ {
+		element := receiver.poll()
+		result = append(result, element)
+	}
+	return result
 }
 
 func (receiver *MaxHeap) print() {
 	fmt.Println(receiver.heap)
+}
+
+func RunningMedian(arr []int) int {
+	maxHeap := &MaxHeap{}
+	for i := range arr {
+		maxHeap.add(arr[i])
+	}
+
+	result := maxHeap.sort()
+	fmt.Println(result)
+
+	if len(result) == 1 {
+		return result[0]
+	} else if len(result)%2 != 0 {
+		median := (len(result) - 1) / 2
+		return result[median]
+	} else {
+		a := len(result) / 2
+		return (a + a - 1) / 2
+
+	}
+
 }

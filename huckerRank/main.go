@@ -52,7 +52,8 @@ func main() {
 	binaryNode1 := &BinaryNode{value: 1, right: binaryNode2}
 	InorderTraversal(binaryNode1)
 
-	// 問題：
-	FindTheRunningMedian()
+	// 問題：https://www.hackerrank.com/challenges/ctci-find-the-running-median/problem
+	arr := []int{12, 4, 7, 4, 7, 4, 4, 7, 12}
+	FindTheRunningMedian(arr)
 
 }
