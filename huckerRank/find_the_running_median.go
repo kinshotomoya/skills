@@ -84,8 +84,10 @@ func (receiver *MaxHeap) poll() int {
 	}
 }
 
-// TODO: ヒープソートを適応
 // これで配列の中央値を取得する！！
+// time complexity: O(N log N)
+// N: 全ての要素を操作する必要がある
+// log N:　１つの要素をソートする際に、二分木のソートになるのでlog N
 func (receiver *MaxHeap) sort() []int {
 	result := make([]int, 0)
 	count := len(receiver.heap)
