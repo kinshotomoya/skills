@@ -56,4 +56,8 @@ func main() {
 	arr := []int{12, 4, 7, 4, 7, 4, 4, 7, 12}
 	FindTheRunningMedian(arr)
 
+	// 文字列操作の問題
+	CountCapitalLetters("i am a software engineer")
+	CountEvenNumber("1,2,3,3,4,5,6,6,6,6,6,6,6")
+
 }
