@@ -10,7 +10,7 @@ func main() {
 	fmt.Println(RotLeft([]int32{1, 2, 3, 4, 5}, 12))
 
 	// 問題: https://www.hackerrank.com/challenges/ctci-making-anagrams/problem?h_r=internal-search
-	fmt.Println(TextAnagram("cde", "abc"))
+	fmt.Println(TextAnagram("fcrxzwscanmligyxyvym", "jxwtrhvujlmrpdoqbisbwhmgpmeoke"))
 	fmt.Println(TextAnagram("eeeeeeeeeeeeeeeed", "eeeeeeeeeeeddd"))
 	// -> eeeeeeeeeeedが残ればいいので、削除する文字列はeeeee5個とdd2個の7個
 
