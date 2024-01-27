@@ -8,25 +8,29 @@ import (
 func SyncCond() {
 	// クリティカルセクション（複数goroutineから読み書きされるメモリ）
 	queue := make([]int, 0, 10)
+	var checkpoint int
 
 	sender := func(c *sync.Cond, name string, fn func()) {
-		var wg sync.WaitGroup
-		wg.Add(1)
+		var runningGoroutineWg sync.WaitGroup
+		runningGoroutineWg.Add(1)
 		go func() {
-			wg.Done()
-			c.L.Lock()         // クリティカルセクションをロックする
-			defer c.L.Unlock() // 最後にクリティカルセクションをアンロックする
-			c.Wait()           // シグナル受け取るまで待機する
-			// TODO: 10個しか表示しないように
-			fmt.Printf("%s send %d\n", name, queue) // クリティカルセクションを読み込む
-			fn()
+			runningGoroutineWg.Done()
+			for {
+				c.L.Lock() // クリティカルセクションをロックする
+				c.Wait()   // シグナル受け取るまで待機する
+				// TODO: checkpointを用いて、前回からの続きの10個しか表示しないように
+				fmt.Printf("%s send %d\n", name, queue[checkpoint:10]) // クリティカルセクションを読み込む
+				checkpoint = 1
+				c.L.Unlock() // 最後にクリティカルセクションをアンロックする
+			}
 		}()
-		wg.Wait()
+		fn()
+		runningGoroutineWg.Wait()
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(2)
 	c := sync.NewCond(&sync.Mutex{})
+	wg.Add(2)
 	sender(c, "sender-1", func() {
 		wg.Done()
 	})
@@ -34,10 +38,10 @@ func SyncCond() {
 		wg.Done()
 	})
 
-	for i := 0; i < 100000; i++ {
+	for i := 0; i < 1000; i++ {
 		c.L.Lock()
 		queue = append(queue, i)
-		if len(queue) == 10 {
+		if len(queue)%9 == 0 {
 			c.Broadcast()
 		}
 		c.L.Unlock()
