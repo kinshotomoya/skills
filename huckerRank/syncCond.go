@@ -3,28 +3,29 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
+// SyncCond ストリームデータを受け取って、queueに10ずつ増えると複数のgoroutineが起動しqueueから値を取り出す例
 func SyncCond() {
+	fetchSize := 2 // queueから取り出すサイズ
 	// クリティカルセクション（複数goroutineから読み書きされるメモリ）
 	queue := make([]int, 0, 10)
-	var checkpoint int
 
 	sender := func(c *sync.Cond, name string, fn func()) {
 		var runningGoroutineWg sync.WaitGroup
 		runningGoroutineWg.Add(1)
 		go func() {
 			runningGoroutineWg.Done()
+			defer fn()
 			for {
-				c.L.Lock() // クリティカルセクションをロックする
-				c.Wait()   // シグナル受け取るまで待機する
-				// TODO: checkpointを用いて、前回からの続きの10個しか表示しないように
-				fmt.Printf("%s send %d\n", name, queue[checkpoint:10]) // クリティカルセクションを読み込む
-				checkpoint = 1
-				c.L.Unlock() // 最後にクリティカルセクションをアンロックする
+				c.L.Lock()                                                         // クリティカルセクションをロックする
+				c.Wait()                                                           // シグナル受け取るまで待機する。waitが走った時点で、一旦↑のlockは解除される
+				fmt.Printf("%s fetch queue content %d\n", name, queue[:fetchSize]) // クリティカルセクションを読み込む
+				queue = queue[fetchSize:]                                          // クリティカルセクションにライトする（queueから取り出した分を削除する）
+				c.L.Unlock()                                                       // 最後にクリティカルセクションをアンロックする
 			}
 		}()
-		fn()
 		runningGoroutineWg.Wait()
 	}
 
@@ -38,14 +39,17 @@ func SyncCond() {
 		wg.Done()
 	})
 
+	// ストリームデータを受け取るイメージ
 	for i := 0; i < 1000; i++ {
+		time.Sleep(1 * time.Second)
 		c.L.Lock()
 		queue = append(queue, i)
-		if len(queue)%9 == 0 {
+		if len(queue)%10 == 0 {
 			c.Broadcast()
 		}
 		c.L.Unlock()
 	}
+
 	wg.Wait()
 
 }
