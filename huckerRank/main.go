@@ -59,6 +59,7 @@ func main() {
 	////root := Trie{Root: TrieNode{}}
 	////root.Add("hack")
 
-	SyncCond()
+	//SyncCond()
+	SyncPool()
 
 }
