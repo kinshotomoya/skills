@@ -62,3 +62,14 @@ func BenchmarkEncodeWithPoolJson(b *testing.B) {
 		EncodeJsonPool(&jsonData)
 	}
 }
+
+// ベンチマークの結果
+// 高速化はしているが、そこまで大きくはない
+
+//[git][* master]:~/work_space/skills/huckerRank/ go test -bench . -benchmem                                        [/Users/jinzhengpengye/work_space/skills/huckerRank]
+//goos: darwin
+//goarch: amd64
+//pkg: huckerRank.com
+//cpu: Intel(R) Core(TM) i7-8569U CPU @ 2.80GHz
+//BenchmarkEncodeJson-8                     394701              2682 ns/op             880 B/op          6 allocs/op
+//BenchmarkEncodeWithPoolJson-8             457520              2481 ns/op             192 B/op          4 allocs/op
