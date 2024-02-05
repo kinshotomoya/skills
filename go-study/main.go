@@ -8,6 +8,12 @@ import (
 
 func main() {
 
+	//execRateLimit()
+	//execReceiveChannel()
+	execGoroutineSelect()
+}
+
+func execRateLimit() {
 	ctx := context.Background()
 	rateLimiter := NewRateLimiter()
 
@@ -28,5 +34,12 @@ func main() {
 	fmt.Printf("checkLimit4: %v", isOk)
 
 	// TODO: 複数goroutineを起動してratelimitをためしてみる
+}
 
+func execReceiveChannel() {
+	receiveChannel()
+}
+
+func execGoroutineSelect() {
+	selectGoroutine()
 }
