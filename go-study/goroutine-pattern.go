@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func pattern1() {
 
@@ -59,5 +62,31 @@ func pattern2() {
 
 	c := chanOwner()
 	consumer(c)
+
+}
+
+// これはmain goroutineからnewRandStream goroutine側に終了通知を行っていないのでnewRandStream goroutineが正常に終了していない
+func pattern3() {
+	newRandStream := func() <-chan int {
+		randStream := make(chan int)
+		go func() {
+			defer fmt.Println("newRandStream closure exists.")
+			defer close(randStream)
+
+			for {
+				// デフォルトのバッファサイズは0
+				// なので読み込まないとブロックする
+				randStream <- rand.Int()
+			}
+
+		}()
+
+		return randStream
+	}
+
+	randStream := newRandStream()
+	for i := 1; i <= 3; i++ {
+		fmt.Printf("%d: %d\n", i, <-randStream)
+	}
 
 }

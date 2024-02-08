@@ -10,7 +10,8 @@ func main() {
 
 	//execRateLimit()
 	//execReceiveChannel()
-	execGoroutineSelect()
+	//execGoroutineSelect()
+	execGoroutinePattern()
 }
 
 func execRateLimit() {
@@ -42,4 +43,9 @@ func execReceiveChannel() {
 
 func execGoroutineSelect() {
 	selectGoroutine()
+}
+
+func execGoroutinePattern() {
+	pattern3()
+
 }
