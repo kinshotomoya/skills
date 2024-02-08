@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 func pattern1() {
@@ -88,5 +89,37 @@ func pattern3() {
 	for i := 1; i <= 3; i++ {
 		fmt.Printf("%d: %d\n", i, <-randStream)
 	}
+
+}
+
+func pattern4() {
+	// goroutineを生成したものが終了の責任を負うべき
+	newRandStream := func(done <-chan interface{}) <-chan int {
+		randStream := make(chan int)
+		go func() {
+			defer fmt.Println("newRandStream closure exists.")
+			defer close(randStream)
+
+			for {
+				select {
+				case <-done:
+					return
+				case randStream <- rand.Int():
+				}
+			}
+
+		}()
+
+		return randStream
+	}
+
+	done := make(chan interface{})
+	randStream := newRandStream(done)
+	for i := 1; i <= 3; i++ {
+		fmt.Printf("%d: %d\n", i, <-randStream)
+	}
+	close(done)
+
+	time.Sleep(2 * time.Second)
 
 }

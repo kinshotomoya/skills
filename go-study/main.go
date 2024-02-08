@@ -46,6 +46,6 @@ func execGoroutineSelect() {
 }
 
 func execGoroutinePattern() {
-	pattern3()
-
+	//pattern3()
+	pattern4()
 }
