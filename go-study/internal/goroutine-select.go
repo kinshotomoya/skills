@@ -1,11 +1,11 @@
-package main
+package internal
 
 import (
 	"fmt"
 	"runtime"
 )
 
-func selectGoroutine() {
+func SelectGoroutine() {
 
 	// 複数のchannelをselectで待ち受けしていて同時に解放したらどうなるのか？
 	c1 := make(chan any)

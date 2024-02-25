@@ -3,20 +3,22 @@ package main
 import (
 	"context"
 	"fmt"
+	"go-study/internal"
 	"time"
 )
 
 func main() {
-
+	fmt.Printf("ss")
 	//execRateLimit()
 	//execReceiveChannel()
 	//execGoroutineSelect()
-	execGoroutinePattern()
+	//execGoroutinePattern()
+	execGoroutineErrorHandling()
 }
 
 func execRateLimit() {
 	ctx := context.Background()
-	rateLimiter := NewRateLimiter()
+	rateLimiter := internal.NewRateLimiter()
 
 	key := "userid: 1"
 
@@ -38,14 +40,18 @@ func execRateLimit() {
 }
 
 func execReceiveChannel() {
-	receiveChannel()
+	internal.ReceiveChannel()
 }
 
 func execGoroutineSelect() {
-	selectGoroutine()
+	internal.SelectGoroutine()
 }
 
 func execGoroutinePattern() {
 	//pattern3()
-	pattern4()
+	internal.Pattern4()
+}
+
+func execGoroutineErrorHandling() {
+	internal.ErrorHandling()
 }

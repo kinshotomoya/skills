@@ -1,8 +1,8 @@
-package main
+package internal
 
 import "fmt"
 
-func receiveChannel() {
+func ReceiveChannel() {
 
 	// channelのスコープはできる限り小さくすることでどのように振る舞うのかが明瞭になる
 	chaOwner := func() <-chan int {

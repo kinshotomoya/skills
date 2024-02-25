@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"fmt"
@@ -92,7 +92,7 @@ func pattern3() {
 
 }
 
-func pattern4() {
+func Pattern4() {
 	// goroutineを生成したものが終了の責任を負うべき
 	newRandStream := func(done <-chan interface{}) <-chan int {
 		randStream := make(chan int)
