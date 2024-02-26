@@ -8,12 +8,12 @@ import (
 )
 
 func main() {
-	fmt.Printf("ss")
 	//execRateLimit()
 	//execReceiveChannel()
 	//execGoroutineSelect()
 	//execGoroutinePattern()
-	execGoroutineErrorHandling()
+	//execGoroutineErrorHandling()
+	execRepeatAndTake()
 }
 
 func execRateLimit() {
@@ -54,4 +54,8 @@ func execGoroutinePattern() {
 
 func execGoroutineErrorHandling() {
 	internal.ErrorHandling()
+}
+
+func execRepeatAndTake() {
+	internal.RepeatAndTake()
 }
