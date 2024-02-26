@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"sync"
 )
 
 func Pipeline() {
@@ -105,6 +106,40 @@ func RepeatAndTake() {
 	values := take(done, repeat(done, 1, 2, 3), 10000)
 	for v := range values {
 		fmt.Printf("%v", v)
+	}
+
+}
+
+func FunInAndFunOut() {
+	funIn := func(done <-chan any, channels ...<-chan any) <-chan any {
+		// 複数のストリームを束ねるストリーム
+		multiplexStream := make(chan any)
+		var wg sync.WaitGroup
+
+		multiplex := func(channel <-chan any) {
+			defer wg.Done()
+			for v := range channel {
+				select {
+				case <-done:
+					return
+				case multiplexStream <- v:
+				}
+			}
+		}
+
+		for _, c := range channels {
+			wg.Add(1)
+			go multiplex(c)
+		}
+
+		go func() {
+			wg.Wait()
+			// 全てのストリームの読み込むが終わったら、multiplexStreamチャネルを閉じる
+			// チャネルを閉じる責務はチャネルを作ったスコープで行うべき！
+			close(multiplexStream)
+		}()
+
+		return multiplexStream
 	}
 
 }
