@@ -142,4 +142,8 @@ func FunInAndFunOut() {
 		return multiplexStream
 	}
 
+	done := make(chan any)
+	channels := make(chan any)
+	funIn(done, channels)
+
 }
