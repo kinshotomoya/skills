@@ -27,4 +27,8 @@ func GoroutineTee() {
 		return out1, out2
 	}
 
+	done := make(chan any)
+	in := make(chan any)
+	tee(done, in)
+
 }
