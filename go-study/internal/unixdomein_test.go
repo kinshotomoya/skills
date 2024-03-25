@@ -78,7 +78,7 @@ func TestMain(m *testing.M) {
 
 }
 
-// unixdomainsocketの方がスループットは5倍近く良い
+// l
 
 //[git][* master]:~/work_space/skills/go-study/internal/ go test -bench . -benchmem                          [/Users/jinzhengpengye/work_space/skills/go-study/internal]
 //goos: darwin
