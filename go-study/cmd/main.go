@@ -13,7 +13,8 @@ func main() {
 	//execGoroutineSelect()
 	//execGoroutinePattern()
 	//execGoroutineErrorHandling()
-	execRepeatAndTake()
+	//execRepeatAndTake()
+	execRateLimitWithRua()
 }
 
 func execRateLimit() {
@@ -37,6 +38,13 @@ func execRateLimit() {
 	fmt.Printf("checkLimit4: %v", isOk)
 
 	// TODO: 複数goroutineを起動してratelimitをためしてみる
+}
+
+func execRateLimitWithRua() {
+	ctx := context.Background()
+	rateLimiter := internal.NewRateLimiter()
+
+	rateLimiter.RateLimitWithRua(ctx)
 }
 
 func execReceiveChannel() {
