@@ -21,11 +21,11 @@ func CreateTcpConnection() (net.Conn, error) {
 	return con, nil
 }
 
-func WriteData(con net.Conn) {
-	request := []byte("Hello, how have you been?")
-	_, err := con.Write(request)
+func WriteData(con net.Conn, data []byte) error {
+	_, err := con.Write(data)
 	if err != nil {
 		slog.Error(fmt.Errorf("failed to write: %w", err).Error())
-		return
+		return err
 	}
+	return nil
 }

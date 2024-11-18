@@ -36,6 +36,6 @@ func main() {
 	}()
 
 	wg.Wait()
-	slog.Info("context done. exiting...")
+	slog.Info("finish process...")
 
 }
