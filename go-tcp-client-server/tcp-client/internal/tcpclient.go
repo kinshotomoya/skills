@@ -13,10 +13,12 @@ type TcpClient struct {
 	con      net.Conn
 	wg       *sync.WaitGroup
 	doneRead chan struct{}
+	counter  int
 }
 
 func NewTcpClient(con net.Conn) *TcpClient {
 	doneRead := make(chan struct{})
+	//con.SetReadDeadline(time.Now().Add( * time.Microsecond))
 	var wg sync.WaitGroup
 	return &TcpClient{
 		con:      con,
@@ -45,9 +47,11 @@ func (c *TcpClient) Read(ctx context.Context) error {
 				// 1. con.Closeする前に、別サーバのTCPクライアントからのコネクションに対して新規データ書き込みを止める
 				// 2. 新規でデータが書き込まれるのが止まった後に、現在コネクションに書き込まれているデータの読み込みが完了するまで待つ
 				// 3. 読み込みが完了したら、connection.Closeする
-				return err
+				//return err
+				continue
 			}
 			c.wg.Add(1)
+			c.counter++
 			go func() {
 				defer c.wg.Done()
 				time.Sleep(5 * time.Second)
@@ -69,4 +73,5 @@ func (c *TcpClient) Shutdown() {
 	c.con.Write([]byte("finish shutdown"))
 	// コネクションをclient側から閉じる
 	c.con.Close()
+	slog.Info(fmt.Sprintf("counter: %d", c.counter))
 }

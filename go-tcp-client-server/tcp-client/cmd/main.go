@@ -22,6 +22,7 @@ func main() {
 	defer con.Close()
 
 	client := internal.NewTcpClient(con)
+	defer client.Shutdown()
 	slog.Info("dial success!")
 
 	var wg sync.WaitGroup
