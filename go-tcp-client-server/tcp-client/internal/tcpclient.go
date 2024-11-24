@@ -2,7 +2,9 @@ package internal
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"net"
 	"sync"
@@ -18,7 +20,7 @@ type TcpClient struct {
 
 func NewTcpClient(con net.Conn) *TcpClient {
 	doneRead := make(chan struct{})
-	//con.SetReadDeadline(time.Now().Add( * time.Microsecond))
+	con.SetReadDeadline(time.Now().Add(5 * time.Second))
 	var wg sync.WaitGroup
 	return &TcpClient{
 		con:      con,
@@ -42,13 +44,14 @@ func (c *TcpClient) Read(ctx context.Context) error {
 			length, err := c.con.Read(b)
 			slog.Info("read data: ", string(b[:length]))
 			if err != nil {
-				slog.Error(fmt.Errorf("failed to read: %w", err).Error())
-				// TODO: 以下満たしたいがどうすればいいか
-				// 1. con.Closeする前に、別サーバのTCPクライアントからのコネクションに対して新規データ書き込みを止める
-				// 2. 新規でデータが書き込まれるのが止まった後に、現在コネクションに書き込まれているデータの読み込みが完了するまで待つ
-				// 3. 読み込みが完了したら、connection.Closeする
-				//return err
-				continue
+				switch {
+				case errors.Is(err, io.EOF):
+					slog.Error("connection closed from TCP Server.")
+					return nil
+				default:
+					slog.Error(fmt.Errorf("failed to read: %w", err).Error())
+					continue
+				}
 			}
 			c.wg.Add(1)
 			c.counter++
@@ -72,6 +75,7 @@ func (c *TcpClient) Shutdown() {
 
 	c.con.Write([]byte("finish shutdown"))
 	// コネクションをclient側から閉じる
+	// 中身見るとfdを破棄している
 	c.con.Close()
 	slog.Info(fmt.Sprintf("counter: %d", c.counter))
 }

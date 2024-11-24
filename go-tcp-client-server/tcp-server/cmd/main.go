@@ -30,25 +30,31 @@ func main() {
 		defer wg1.Done()
 		b := make([]byte, 1024)
 		for {
-			length, err := con.Read(b)
-			if err != nil {
-				slog.Error(fmt.Errorf("failed to read data: %w", err).Error())
+			select {
+			case <-ctx.Done():
+				slog.Info("context done. stop reading data.")
 				return
+			default:
+				length, err := con.Read(b)
+				if err != nil {
+					slog.Error(fmt.Errorf("failed to read data: %w", err).Error())
+					return
+				}
+				res := string(b[:length])
+				if res == "start shutdown" {
+					slog.Info("shutdown ark received...")
+					readData <- struct{}{}
+				}
+				if res == "finish shutdown" {
+					return
+				}
+				slog.Info(fmt.Sprintf("read data: %s", res))
 			}
-			res := string(b[:length])
-			if res == "start shutdown" {
-				slog.Info("shutdown ark received...")
-				readData <- struct{}{}
-			}
-			if res == "finish shutdown" {
-				return
-			}
-			slog.Info(fmt.Sprintf("read data: %s", res))
 		}
 	}()
 
 	slog.Info("start writing data to connection...")
-	t := time.NewTicker(1 * time.Second)
+	t := time.NewTicker(10 * time.Second)
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
