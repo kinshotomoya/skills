@@ -8,18 +8,41 @@ import (
 	"sync"
 	"syscall"
 	"tcp-client/internal"
-	"time"
 )
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
 	defer stop()
-	con, err := net.DialTimeout("tcp", "localhost:8080", 10*time.Second)
+	// TODO: DialTCPを使ってlocalhost:8080に接続する
+	// そうすると、より詳細にFINとかを扱えるかも
+	ltcpAddr := net.TCPAddr{
+		IP:   net.ParseIP("localhost"),
+		Port: 8080,
+	}
+	rtcpAddr := net.TCPAddr{
+		IP:   net.ParseIP("localhost"),
+		Port: 8090,
+	}
+	con, err := net.DialTCP("tcp", &ltcpAddr, &rtcpAddr)
+	// closewriteはshtdownWRiteと同じ
+	// 全二重送信のwrite側を閉じる
+	// closeReadはshutdownReadと同じ
+	// 全二重送信のread側を閉じる
+	// なので、readしている方からプロセス切る場合は、まずcloseWriteを呼び出す
+	// あ、そうするとclient側からレスポンスのwriteできないかのかな？？？　要確認
+	// 参考:
+	// https://ja.manpages.org/shutdown/2
+	// https://ryuichi1208.hateblo.jp/entry/2021/12/19/204814
+	//con.CloseWrite()
+	//con.CloseWrite()
+
+	// うーんなんかうまくいかないな。。。
+	// ↓この辺の利用読むと手掛かりになるかも
+	// https://github.com/golang/go/issues/67337
 	if err != nil {
 		slog.Error("failed to dial: ", err)
 		return
 	}
-	defer con.Close()
 
 	client := internal.NewTcpClient(con)
 	defer client.Shutdown()

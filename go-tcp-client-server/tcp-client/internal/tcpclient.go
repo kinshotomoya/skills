@@ -12,15 +12,15 @@ import (
 )
 
 type TcpClient struct {
-	con      net.Conn
+	con      *net.TCPConn
 	wg       *sync.WaitGroup
 	doneRead chan struct{}
 	counter  int
 }
 
-func NewTcpClient(con net.Conn) *TcpClient {
+func NewTcpClient(con *net.TCPConn) *TcpClient {
 	doneRead := make(chan struct{})
-	con.SetReadDeadline(time.Now().Add(5 * time.Second))
+	//con.SetReadDeadline(time.Now().Add(5 * time.Second))
 	var wg sync.WaitGroup
 	return &TcpClient{
 		con:      con,
@@ -33,7 +33,6 @@ func (c *TcpClient) Read(ctx context.Context) error {
 	for {
 		select {
 		case <-ctx.Done():
-			c.Shutdown()
 			return nil
 		default:
 			// loopで同じコネクションからデータを読み込み続ける
@@ -58,8 +57,7 @@ func (c *TcpClient) Read(ctx context.Context) error {
 			go func() {
 				defer c.wg.Done()
 				time.Sleep(5 * time.Second)
-				// 読み込んだデータをログに出力
-				slog.Info("read data: in goroutine", string(b[:length]))
+				// ここでackを返す
 				c.con.Write([]byte(fmt.Sprintf("ack: %s", string(b[:length]))))
 			}()
 		}
@@ -68,12 +66,21 @@ func (c *TcpClient) Read(ctx context.Context) error {
 
 func (c *TcpClient) Shutdown() {
 	// 他のサーバからのコネクションに対して新規データ書き込みを止めるためのシグナルをTCPサーバに送る
-	c.con.Write([]byte("start shutdown"))
+	//c.con.Write([]byte("start shutdown"))
 	slog.Info("context done. exiting...")
+
+	err := c.con.CloseWrite()
+	if err != nil {
+		slog.Info(fmt.Errorf("failed to close write: %w", err).Error())
+	}
 	// 今readしている内容が完了するまで待つ
 	c.wg.Wait()
+	time.Sleep(30 * time.Second)
+	//_, err := c.con.Write([]byte("finish shutdown"))
+	//if err != nil {
+	//	slog.Error(fmt.Errorf("failed to write: %w", err).Error())
+	//}
 
-	c.con.Write([]byte("finish shutdown"))
 	// コネクションをclient側から閉じる
 	// 中身見るとfdを破棄している
 	c.con.Close()

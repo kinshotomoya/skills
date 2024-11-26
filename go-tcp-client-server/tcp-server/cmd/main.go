@@ -54,7 +54,7 @@ func main() {
 	}()
 
 	slog.Info("start writing data to connection...")
-	t := time.NewTicker(10 * time.Second)
+	t := time.NewTicker(2 * time.Second)
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {

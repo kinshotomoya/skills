@@ -1,18 +1,21 @@
 package internal
 
 import (
-	"fmt"
 	"log/slog"
 	"net"
 )
 
-func CreateTcpConnection() (net.Conn, error) {
-	listen, err := net.Listen("tcp", ":8080")
+func CreateTcpConnection() (*net.TCPConn, error) {
+	addr := net.TCPAddr{
+		IP:   net.ParseIP("localhost"),
+		Port: 8090,
+	}
+	listen, err := net.ListenTCP("tcp", &addr)
 	if err != nil {
 		return nil, err
 	}
 	slog.Info("waiting for connection...")
-	con, err := listen.Accept()
+	con, err := listen.AcceptTCP()
 	slog.Info("connected!")
 	if err != nil {
 		return nil, err
@@ -24,7 +27,6 @@ func CreateTcpConnection() (net.Conn, error) {
 func WriteData(con net.Conn, data []byte) error {
 	_, err := con.Write(data)
 	if err != nil {
-		slog.Error(fmt.Errorf("failed to write: %w", err).Error())
 		return err
 	}
 	return nil
