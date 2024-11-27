@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"os/signal"
 	"sync"
@@ -35,26 +37,20 @@ func main() {
 				slog.Info("context done. stop reading data.")
 				return
 			default:
-				length, err := con.Read(b)
+				_, err := con.Read(b)
 				if err != nil {
-					slog.Error(fmt.Errorf("failed to read data: %w", err).Error())
-					return
+					if errors.Is(err, io.EOF) {
+						slog.Info("connection closed from TCP Client.")
+						readData <- struct{}{}
+						return
+					}
 				}
-				res := string(b[:length])
-				if res == "start shutdown" {
-					slog.Info("shutdown ark received...")
-					readData <- struct{}{}
-				}
-				if res == "finish shutdown" {
-					return
-				}
-				slog.Info(fmt.Sprintf("read data: %s", res))
 			}
 		}
 	}()
 
 	slog.Info("start writing data to connection...")
-	t := time.NewTicker(2 * time.Second)
+	t := time.NewTicker(1 * time.Second)
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {

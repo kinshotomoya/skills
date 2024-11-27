@@ -39,13 +39,15 @@ func main() {
 	// うーんなんかうまくいかないな。。。
 	// ↓この辺の利用読むと手掛かりになるかも
 	// https://github.com/golang/go/issues/67337
+
+	// これも参考になるかも？
+	// https://stackoverflow.com/questions/17803090/data-loss-even-if-remote-socket-is-gracefully-closed-in-java
 	if err != nil {
 		slog.Error("failed to dial: ", err)
 		return
 	}
 
 	client := internal.NewTcpClient(con)
-	defer client.Shutdown()
 	slog.Info("dial success!")
 
 	var wg sync.WaitGroup
@@ -60,6 +62,6 @@ func main() {
 	}()
 
 	wg.Wait()
+	client.Shutdown()
 	slog.Info("finish process...")
-
 }
