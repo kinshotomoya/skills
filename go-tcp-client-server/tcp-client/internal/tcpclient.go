@@ -67,7 +67,7 @@ func (c *TcpClient) Read(ctx context.Context) error {
 		default:
 			// コネクションからデータを読み込む
 			_, err := c.read()
-			time.Sleep(5 * time.Second)
+			time.Sleep(200 * time.Microsecond)
 			if err != nil {
 				switch {
 				case errors.Is(err, io.EOF):

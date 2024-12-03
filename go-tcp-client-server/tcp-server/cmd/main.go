@@ -50,7 +50,7 @@ func main() {
 	}()
 
 	slog.Info("start writing data to connection...")
-	t := time.NewTicker(1 * time.Second)
+	t := time.NewTicker(100 * time.Microsecond)
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
@@ -66,7 +66,7 @@ func main() {
 				return
 			case <-t.C:
 				slog.Info(fmt.Sprintf("writing data %d...", counter))
-				err := internal.WriteData(con, []byte(fmt.Sprintf("data %d\n", counter)))
+				err := internal.WriteData(con, []byte(fmt.Sprintf("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz %d\n", counter)))
 				if err != nil {
 					slog.Error(fmt.Errorf("failed to write data: %w", err).Error())
 					return

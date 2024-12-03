@@ -24,6 +24,12 @@ func main() {
 		Port: 8090,
 	}
 	con, err := net.DialTCP("tcp", &ltcpAddr, &rtcpAddr)
+	// TODO: bufferReadを使ってgraceful shutdownを試す
+	err = con.SetReadBuffer(1)
+	if err != nil {
+		return
+	}
+	err = con.SetWriteBuffer(1)
 	// closewriteはshtdownWRiteと同じ
 	// 全二重送信のwrite側を閉じる
 	// closeReadはshutdownReadと同じ
