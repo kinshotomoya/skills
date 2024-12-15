@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -50,7 +51,7 @@ func main() {
 	}()
 
 	slog.Info("start writing data to connection...")
-	t := time.NewTicker(100 * time.Microsecond)
+	t := time.NewTicker(1 * time.Millisecond)
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
@@ -66,7 +67,10 @@ func main() {
 				return
 			case <-t.C:
 				slog.Info(fmt.Sprintf("writing data %d...", counter))
-				err := internal.WriteData(con, []byte(fmt.Sprintf("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz %d\n", counter)))
+				pattern := []byte("ABC")
+				data := bytes.Repeat(pattern, 1024/len(pattern)+1)
+				data = data[:1024] // 必要な長さに切り詰める
+				err := internal.WriteData(con, data)
 				if err != nil {
 					slog.Error(fmt.Errorf("failed to write data: %w", err).Error())
 					return

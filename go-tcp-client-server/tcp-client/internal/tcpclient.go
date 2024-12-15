@@ -12,13 +12,13 @@ import (
 )
 
 type TcpClient struct {
-	con      *net.TCPConn
+	con      net.Conn
 	wg       *sync.WaitGroup
 	doneRead chan struct{}
 	counter  int
 }
 
-func NewTcpClient(con *net.TCPConn) *TcpClient {
+func NewTcpClient(con net.Conn) *TcpClient {
 	doneRead := make(chan struct{})
 	//con.SetReadDeadline(time.Now().Add(5 * time.Second))
 	var wg sync.WaitGroup
@@ -45,7 +45,7 @@ func (c *TcpClient) Read(ctx context.Context) error {
 			// これを受け取ったserver側はwriteした際にio.EOFを返す
 			// closeReadした時点で書き込まれているデータはlostしてしまう...
 			// CloseRead()をすると、こちら側からserverに対してRSTを送る
-			c.con.CloseRead()
+			c.con.Close()
 
 			// NOTE: application levelでの解決をするしかないっぽい
 			//  https://stackoverflow.com/questions/79230835/gracefully-closing-a-tcp-connection-from-client-side-in-go-while-ensuring-all-da?noredirect=1#comment139715989_79230835
@@ -67,7 +67,7 @@ func (c *TcpClient) Read(ctx context.Context) error {
 		default:
 			// コネクションからデータを読み込む
 			_, err := c.read()
-			time.Sleep(200 * time.Microsecond)
+			time.Sleep(2 * time.Second)
 			if err != nil {
 				switch {
 				case errors.Is(err, io.EOF):
@@ -94,7 +94,7 @@ func (c *TcpClient) read() (int, error) {
 	// loopで同じコネクションからデータを読み込み続ける
 	// このサイズは適当
 	// messageのサイズがわかっているなら、固定値を入れる（Visaからのサイズが決まった決済データであったり）
-	b := make([]byte, 10)
+	b := make([]byte, 20)
 	length, err := c.con.Read(b)
 	if err != nil {
 		return 0, err
@@ -108,7 +108,7 @@ func (c *TcpClient) Shutdown() {
 	//c.con.Write([]byte("start shutdown"))
 	slog.Info("context done. exiting...")
 
-	err := c.con.CloseRead()
+	err := c.con.(*net.TCPConn).CloseRead()
 	if err != nil {
 		slog.Info(fmt.Errorf("failed to close write: %w", err).Error())
 	}
